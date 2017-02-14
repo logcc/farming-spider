@@ -1,0 +1,16 @@
+body {
+	background: #abc;
+}
+
+#div-data {
+  text-align: center;
+}
+
+
+#main {
+  border: 2px solid gray;
+	width: 800px;
+	height: 550px;
+	margin: 5px auto;
+	padding-top: 10px;
+}

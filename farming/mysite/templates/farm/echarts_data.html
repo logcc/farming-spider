@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <script src="{% static 'js/echarts.js' %}"></script>
+    <script src="{% static 'js/china.js' %}"></script>
+</head>
+<body>
+    <!-- 插入ECharts图表 -->
+    <div id="main"></div>
+
+    <script>
+    var farmdata = function (echarts) {
+    var myChart = echarts.init(document.getElementById('main'));
+    
+    // 数据库数据插入
+    var cityDict = [
+      {% for farmdata in farmdatas %}
+        {name: '{{ farmdata.province }}',value: {{ farmdata.account }} },
+      {% endfor %}
+    ]
+    // 循环每个城市的数据
+    var cityData = function(array) {
+        var data = []
+        for (var i = 0; i < array.length; i++) {
+          var e = array[i]
+          data.push(e)
+          // console.log('e', e)
+
+        }
+        return data
+    }
+
+    var option = {
+        title: {
+            text: '全国粮食作物面积统计表',
+            subtext: '',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data:['面积(万亩)']
+        },
+        visualMap: {
+            min: 0,
+            max: 20000,
+            left: 'left',
+            top: 'bottom',
+            text: ['高','低'],           // 文本，默认为数值文本
+            calculable: true
+        },
+        toolbox: {
+            show: true,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            feature: {
+                dataView: {readOnly: false},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        series: [
+            {
+                name: '面积(万亩)',
+                type: 'map',
+                map: 'china',
+                roam: false,
+                label: {
+                    normal: {
+                        show: true
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                // 每个城市数据调用
+                data:cityData(cityDict)
+            },
+        ]
+    };
+    myChart.setOption(option);
+  };
+  // 函数调用
+    farmdata(echarts)
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+      <div id="div-data">
+        <h3>2000-2015年全国粮食作物面积统计数据</h3>
+            <p>请输入需要查询的年份: <input type="text" name="year" />
+              <input class="year_submit" type="submit" value="确认" />
+            </p>
+        <div class="year_value"></div>
+      </div>
+      <script>
+      $(".year_submit").click(function(){
+          var year = $("input[name='year']").val();
+          // alert(year)
+          $.ajax({
+            url:"{% url "show_data" %}",
+            type:"post",
+            data:{"year":year},
+            success:function(data){
+              $(".year_value").text("")
+             $(".year_value").append(data)
+            }
+          });
+        });
+      </script>
+</body>
+</html>
